@@ -85,9 +85,11 @@ namespace myns
 	template <class T> constexpr void sort(std::vector<T>& v);
 	template <class T> constexpr void gyakusort(std::vector<T>& v);//逆順
 
+	//文字列の前方一致/後方一致
 	bool startsWith(const std::string& a, const std::string& b)noexcept;
 	bool endsWith(const std::string& a, const std::string& b)noexcept;
 
+	//文字列分割
 	std::vector<std::string> split(const std::string& str, const std::string& separator, bool deleteBlank)noexcept;
 	std::vector<std::wstring> split(const std::wstring& str, const std::wstring& separator, bool deleteBlank)noexcept;
 	template <typename T> constexpr bool next_combination(const T first, const T last, int k) noexcept;
@@ -155,6 +157,7 @@ namespace myns
 	template<class T> constexpr tagMyCerr& operator<<(tagMyCerr& myOs, const T& thing) noexcept;
 
 	//標準入力リダイレクト
+	std::string GetClipboardText();
 	bool SetStandardInput();
 	bool SetStandardInput(std::string strPath);
 	//標準出力リダイレクト
@@ -236,8 +239,30 @@ std::ostream& myns::operator<<(std::ostream& os, myns::text_color color) noexcep
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), wTextColor);
 	return os;
 }
+std::string myns::GetClipboardText() {
+	if (!OpenClipboard(nullptr)) {
+		return "";
+	}
+	HANDLE hData = GetClipboardData(CF_TEXT);
+	if (hData == nullptr) {
+		CloseClipboard();
+		return "";
+	}
+	char* pszText = static_cast<char*>(GlobalLock(hData));
+	if (pszText == nullptr) {
+		return "";
+	}
+	GlobalUnlock(hData);
+	CloseClipboard();
+	return std::string(pszText);
+}
 bool myns::SetStandardInput() {
-	return myns::SetStandardInput(myns::path);
+	std::string clipText = myns::GetClipboardText();
+	if (clipText.size() > 0) {
+		static std::istringstream iss(clipText);
+		std::cin.rdbuf(iss.rdbuf());
+	}else myns::SetStandardInput(myns::path);
+	return true;
 }
 bool myns::SetStandardInput(std::string strPath) {
 	//おそらくリダイレクト先のifstreamオブジェクトはずっと保持する必要がある
@@ -517,6 +542,4 @@ int main() {
 void solving() {
 	SetStandardInput();
 	//SetConsoleTopMost();
-
-
 }
