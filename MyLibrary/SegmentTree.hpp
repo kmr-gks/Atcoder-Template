@@ -1,11 +1,11 @@
-template< typename T=int > struct SegmentTree {
+template< typename T = int > class SegmentTree {
 
 	/*
 	使用例
 	https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DSL_2_A&lang=jp
 	int n, q;
 	cin >> n >> q;
-	SegmentTree<int> segtree(n, [](int a, int b) {return min(a, b); }, inf);
+	SegmentTree<> segtree(n, [](int a, int b) {return min(a, b); }, inf);
 	while (q--) {
 		int t, x, y;
 		cin >> t >> x >> y;
@@ -22,6 +22,8 @@ template< typename T=int > struct SegmentTree {
 
 	const func f;
 	const T default_value;
+
+	public:
 
 	//コンストラクタ セグメント木に格納するデータ数、比較関数、デフォルトの値を指定する。
 	SegmentTree(int kosuu, const func f, const T& default_value = 0) : f(f), default_value(default_value) {

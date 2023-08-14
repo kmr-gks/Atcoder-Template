@@ -8,13 +8,7 @@ typedef long long ll;
 //プロトタイプ
 //a^nをpで割った余りを返す
 ll modpow(ll a,ll n,ll p);
-//SegmentTree:初期化n_:要素数
-static int segmentn,segdat[2*(1<<17)-1];
-void seginit(int n_);
-//SegmentTree:k番目の値(0-indexed)をaに変更
-void segupdate(int k,int a);
-//SegmentTree:[a,b)の最小値を求めるquery(a,b,0,0,segmentn)として呼ぶ。
-int segquery(int a,int b,int k,int l,int r);
+
 //文字列sからbeforeを検索してafterに置換し、をs返す
 char* myreplace(char* s, const char* before, const char* after);
 
@@ -46,44 +40,6 @@ vector<T> compress(vector<T>& X)
 		X[i] = lower_bound(vals.begin(), vals.end(), X[i]) - vals.begin();
 	}
 	return vals;
-}
-
-void seginit(int n_)
-{
-	//簡単のため要素数を2のべき乗に
-	segmentn=1;
-	while(segmentn<n_)segmentn*=2;
-	
-	//すべての値をINT_MAXに
-	for (int i=0;i<2*segmentn-1;i++) segdat[i]=INT_MAX;
-}
-
-void segupdate(int k,int a)
-{
-	//葉の節点
-	k+=segmentn-1;
-	segdat[k]=a;
-	//登りながら更新
-	while (k>0)
-	{
-		k=(k-1)/2;
-		segdat[k]=min(segdat[k*2+1],segdat[k*2+2]);
-	}
-}
-
-int segquery(int a,int b,int k,int l,int r)
-{
-	//[a,b)と[l,r)が交差しなければ、INT_MAX
-	if (r<=a||b<=l) return INT_MAX;
-
-	//[a,b)が[l,r)を完全に含んでいれば、この節点の値
-	if (a<=r&&r<=b) return segdat[k];
-	else {
-		//そうでなければ、2つの子の最小値
-		int vl=segquery(a,b,k*2+1,l,(l+r)/2);
-		int vr=segquery(a,b,k*2+2,(l+r)/2,r);
-		return min(vl,vr);
-	}
 }
 
 /*
