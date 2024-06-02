@@ -70,11 +70,9 @@ namespace myns
 	HWND GetConsoleHwnd(bool multiwindows);
 	//ハンドルを取得して最前面に持ってくる
 	void SetConsoleTopMost(bool enable, bool multiwindows);
-	//デスクトップフォルダーのパスを取得(ASCII/Shift-JIS)
-	std::string getDesktopPath();
 
 	//標準入力のパス
-	const std::string path = myns::getDesktopPath() + std::string("\\coding\\source\\atcoder-stdInput.txt");
+	const std::string path = std::string("include\\atcoder-stdInput.txt");
 #else
 	//提出時
 	void SetConsoleTopMost(bool = false, bool = false) {}
@@ -208,12 +206,6 @@ void myns::SetConsoleTopMost(bool enable = true, bool multiwindows = false)
 		SetActiveWindow(hwndConsole);
 	}
 	SetConsoleTitle(TEXT("Ready"));
-}
-
-std::string myns::getDesktopPath() {
-	char desktopPath[1000];
-	SHGetSpecialFolderPathA(nullptr, desktopPath, CSIDL_DESKTOP, FALSE);
-	return desktopPath;
 }
 
 std::ostream& myns::operator<<(std::ostream& os, myns::text_color color) noexcept {
@@ -621,4 +613,5 @@ public:
 void solving() {
 	SetStandardInput();
 	SetConsoleTopMost();
+
 }
