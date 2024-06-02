@@ -3,6 +3,8 @@
 //C++
 #include <iostream>
 #include <queue>
+#include <deque>
+#include <vector>
 #include <string>
 #include <stack>
 #include <map>
@@ -15,6 +17,7 @@
 #include <functional>
 #include <fstream>
 #include <regex>
+#include <bitset>
 
 //C
 #include <cstdio>
