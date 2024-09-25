@@ -6,6 +6,7 @@
 #include <deque>
 #include <vector>
 #include <string>
+#include <sstream>
 #include <stack>
 #include <map>
 #include <algorithm>
@@ -18,6 +19,7 @@
 #include <fstream>
 #include <regex>
 #include <bitset>
+#include <tuple>
 
 //C
 #include <cstdio>
